@@ -50,10 +50,10 @@
     white-space:nowrap;
   }
   .nav-btn:hover{color:var(--text);background:rgba(255,255,255,0.04);}
-  .nav-btn[data-view="prog"].active {color:var(--text);  border-bottom-color:var(--accent);}
-  .nav-btn[data-view="vel"].active  {color:var(--vel);   border-bottom-color:var(--vel);}
-  .nav-btn[data-view="mf"].active   {color:var(--mf);    border-bottom-color:var(--mf);}
-  .nav-btn[data-view="fund"].active {color:var(--fund);  border-bottom-color:var(--fund);}
+  .nav-btn[data-view="prog"].active{color:var(--text);  border-bottom-color:var(--accent);}
+  .nav-btn[data-view="vel"].active {color:var(--vel);   border-bottom-color:var(--vel);}
+  .nav-btn[data-view="mf"].active  {color:var(--mf);    border-bottom-color:var(--mf);}
+  .nav-btn[data-view="fund"].active{color:var(--fund);  border-bottom-color:var(--fund);}
 
   /* PAGES */
   .page{display:none;padding:28px 40px;max-width:1200px;margin:0 auto;}
@@ -62,11 +62,6 @@
   /* SECTION TITLE */
   .st{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:var(--accent);margin-bottom:16px;padding-bottom:7px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;}
   .st .num{background:var(--accent);color:var(--navy);font-size:.85rem;padding:2px 9px;border-radius:4px;}
-
-  /* OBJ */
-  .obj-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;align-items:center;}
-  .obj-row span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
-  .obj-pill{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:3px 10px;border-radius:20px;font-size:11px;}
 
   /* DAY CARDS */
   .days-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
@@ -85,12 +80,6 @@
   .tag.s{background:rgba(44,198,83,0.12);color:var(--green);}
   .tag.p{background:rgba(230,57,70,0.15);color:var(--red);}
 
-  /* GIN */
-  .gin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .gin-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
-  .gin-card h4{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:2px;color:var(--gold);margin-bottom:5px;}
-  .gin-card p{font-size:12px;}
-
   /* GROUP HEADER */
   .group-header-bar{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:10px;margin-bottom:24px;}
   .group-header-bar.vel {background:rgba(230,57,70,0.1); border:1px solid rgba(230,57,70,0.3);}
@@ -107,7 +96,7 @@
   .sessions-list{display:flex;flex-direction:column;gap:18px;}
   .sess-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
   .sess-card-header{display:flex;align-items:center;gap:14px;padding:12px 18px;background:linear-gradient(90deg,rgba(255,255,255,0.04),transparent);border-bottom:1px solid var(--border);}
-  .sess-id{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;padding:3px 12px;border-radius:5px;color:var(--navy);}
+  .sess-id{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;padding:3px 12px;border-radius:5px;color:var(--navy);flex-shrink:0;}
   .sess-id.vel {background:var(--vel);}
   .sess-id.mf  {background:var(--mf);}
   .sess-id.fund{background:var(--fund);}
@@ -118,7 +107,7 @@
   .sess-body{padding:16px 18px;}
   .sess-sections{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;}
 
-  /* TREINO SECTIONS */
+  /* TREINO */
   .tsec{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:12px 14px;}
   .tsec-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600;margin-bottom:6px;}
   .ti{font-size:12px;padding:2px 0 2px 8px;border-left:2px solid transparent;color:var(--text);}
@@ -128,6 +117,7 @@
   .ti.rec {border-color:var(--green);}
   .ti.vel {border-color:var(--red);}
   .ti.aer {border-color:#26c6da;}
+  .ti.alig{border-color:#80cbc4;}
   .ti.nd  {color:var(--muted);font-style:italic;}
 
   .nd-notice{padding:22px;text-align:center;color:var(--muted);font-size:13px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px dashed rgba(255,255,255,0.1);}
@@ -136,7 +126,7 @@
   footer{background:var(--navy2);border-top:1px solid var(--border);padding:14px 40px;text-align:center;font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:40px;}
 
   @media(max-width:860px){
-    .days-grid,.gin-grid{grid-template-columns:1fr;}
+    .days-grid{grid-template-columns:1fr;}
     .sess-sections{grid-template-columns:1fr;}
     header,nav,.page{padding-left:16px;padding-right:16px;}
     .nav-btn{padding:12px 14px;font-size:.9rem;}
@@ -170,21 +160,8 @@
 ══════════════════════════════════ -->
 <div class="page active" id="page-prog">
 
-  <div class="st"><span class="num">01</span> OBJETIVOS GERAIS</div>
-  <div class="obj-row">
-    <span>Objetivos:</span>
-    <div class="obj-pill">Reativação de carga</div>
-    <div class="obj-pill">Consolidação técnica</div>
-    <div class="obj-pill">Base aeróbia</div>
-    <div class="obj-pill">Estímulos específicos</div>
-    <div class="obj-pill">Neuromuscular (velocistas)</div>
-    <div class="obj-pill">Cap. aeróbia (meio-fundo)</div>
-  </div>
-
-  <div class="st"><span class="num">02</span> PLANEAMENTO HORÁRIO</div>
-  <div class="days-grid">
-
-    <!-- DIA 1 -->
+  <div class="st"><span class="num">01</span> DIA 1 — Entrada + Sessão 1 + Ginásio + Spa</div>
+  <div class="days-grid" style="grid-template-columns:1fr;max-width:460px;margin-bottom:28px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-num">01</div>
@@ -193,7 +170,6 @@
       <div class="day-card-body">
         <div class="si"><div class="stime">12:00</div><div class="sdesc">Chegada, check-in e briefing técnico</div></div>
         <div class="si"><div class="stime">12:30</div><div class="sdesc">Almoço</div></div>
-        <div class="si"><div class="stime">14:30</div><div class="sdesc">Reunião rápida de preparação (10 min)</div></div>
         <div class="si"><div class="stime">15:00–17:15</div><div class="sdesc">Sessão 1 (Água)<span class="tag a">ÁGUA</span></div></div>
         <div class="si"><div class="stime">17:30</div><div class="sdesc">Snack</div></div>
         <div class="si"><div class="stime">18:00–19:00</div><div class="sdesc">Ginásio<span class="tag g">GINÁSIO</span></div></div>
@@ -202,8 +178,10 @@
         <div class="si"><div class="stime">22:00</div><div class="sdesc">Repouso</div></div>
       </div>
     </div>
+  </div>
 
-    <!-- DIA 2 -->
+  <div class="st"><span class="num">02</span> DIA 2 — Sessão 2 + Sessão 3 + Palestra + Spa</div>
+  <div class="days-grid" style="grid-template-columns:1fr;max-width:460px;margin-bottom:28px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-num">02</div>
@@ -221,8 +199,10 @@
         <div class="si"><div class="stime">22:00</div><div class="sdesc">Repouso</div></div>
       </div>
     </div>
+  </div>
 
-    <!-- DIA 3 -->
+  <div class="st"><span class="num">03</span> DIA 3 — Sessão 4 + Sessão 5 + Encerramento</div>
+  <div class="days-grid" style="grid-template-columns:1fr;max-width:460px;">
     <div class="day-card">
       <div class="day-card-header">
         <div class="day-num">03</div>
@@ -237,30 +217,9 @@
         <div class="si"><div class="stime">17:00</div><div class="sdesc">Encerramento oficial</div></div>
       </div>
     </div>
-
   </div>
 
-  <div class="st"><span class="num">03</span> GINÁSIO &amp; RECUPERAÇÃO</div>
-  <div class="gin-grid">
-    <div class="gin-card">
-      <h4>⚡ Velocistas — Potência Leve (Dia 1 · 18:00–19:00)</h4>
-      <p>Saltos · Medballs · Coordenação explosiva</p>
-    </div>
-    <div class="gin-card">
-      <h4>🔵 Meio-Fundo — Força Funcional (Dia 1 · 18:00–19:00)</h4>
-      <p>Força funcional · Core</p>
-    </div>
-    <div class="gin-card" style="border-color:rgba(44,198,83,0.3);">
-      <h4 style="color:var(--green);">🟢 Spa — Dia 1 &amp; Dia 2</h4>
-      <p>Dia 1: Hidromassagem + Gelo<br>Dia 2: Crioterapia parcial + Hidromassagem + Alongamento ativo</p>
-    </div>
-    <div class="gin-card" style="border-color:rgba(230,57,70,0.25);">
-      <h4 style="color:var(--red);">📋 Palestra — Dia 2 (15:00–16:00)</h4>
-      <p>Objetivos &amp; Planeamento Competitivo para a época</p>
-    </div>
-  </div>
-
-</div>
+</div><!-- /page-prog -->
 
 
 <!-- ══════════════════════════════════
@@ -278,19 +237,15 @@
 
   <div class="sessions-list">
 
-    <!-- S1 VEL -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id vel">S1</div>
         <div><div class="sess-title">Sessão 1 — Dia 1 · 15:00–17:15</div><div class="sess-sub">Reativação aeróbia · Técnica global</div></div>
         <div class="sess-vol nd">A definir</div>
       </div>
-      <div class="sess-body">
-        <div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão entregue pelo treinador Rui Costa</div>
-      </div>
+      <div class="sess-body"><div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão entregue pelo treinador Rui Costa</div></div>
     </div>
 
-    <!-- S2 VEL -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id vel">S2</div>
@@ -331,19 +286,15 @@
       </div>
     </div>
 
-    <!-- S3 VEL -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id vel">S3</div>
         <div><div class="sess-title">Sessão 3 — Dia 2 · 16:15–18:00</div><div class="sess-sub">Séries longas · Ritmo de prova</div></div>
         <div class="sess-vol nd">A definir</div>
       </div>
-      <div class="sess-body">
-        <div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão entregue pelo treinador Rui Costa</div>
-      </div>
+      <div class="sess-body"><div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão entregue pelo treinador Rui Costa</div></div>
     </div>
 
-    <!-- S4 VEL -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id vel">S4</div>
@@ -387,20 +338,17 @@
       </div>
     </div>
 
-    <!-- S5 VEL -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id vel">S5</div>
         <div><div class="sess-title">Sessão 5 — Dia 3 · 14:30–16:00</div><div class="sess-sub">Progressivos · Ritmo de prova · Consolidação final</div></div>
         <div class="sess-vol nd">A definir</div>
       </div>
-      <div class="sess-body">
-        <div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão entregue pelo treinador Rui Costa</div>
-      </div>
+      <div class="sess-body"><div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão entregue pelo treinador Rui Costa</div></div>
     </div>
 
   </div>
-</div>
+</div><!-- /page-vel -->
 
 
 <!-- ══════════════════════════════════
@@ -418,7 +366,6 @@
 
   <div class="sessions-list">
 
-    <!-- S1 MF -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id mf">S1</div>
@@ -455,11 +402,10 @@
       </div>
     </div>
 
-    <!-- S2 MF -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id mf">S2</div>
-        <div><div class="sess-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-sub">Técnica específica · Aeróbio · Velocidade — plano comum aos 3 grupos</div></div>
+        <div><div class="sess-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-sub">Técnica específica · Aeróbio · Velocidade</div></div>
         <div class="sess-vol">5 000 m</div>
       </div>
       <div class="sess-body">
@@ -496,7 +442,6 @@
       </div>
     </div>
 
-    <!-- S3 MF -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id mf">S3</div>
@@ -532,11 +477,10 @@
       </div>
     </div>
 
-    <!-- S4 MF -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id mf">S4</div>
-        <div><div class="sess-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-sub">Velocidade · Aeróbio + Força Resistente · Rendições — plano comum</div></div>
+        <div><div class="sess-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-sub">Velocidade · Aeróbio + Força Resistente · Rendições</div></div>
         <div class="sess-vol">5 000 m</div>
       </div>
       <div class="sess-body">
@@ -573,7 +517,6 @@
       </div>
     </div>
 
-    <!-- S5 MF -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id mf">S5</div>
@@ -608,7 +551,7 @@
     </div>
 
   </div>
-</div>
+</div><!-- /page-mf -->
 
 
 <!-- ══════════════════════════════════
@@ -620,7 +563,7 @@
     <div class="icon">🟠</div>
     <div>
       <h2>FUNDO</h2>
-      <p>5 sessões · Volume total: 31 300 m · Série principal: 59% do volume total</p>
+      <p>5 sessões · Volume total: 33 800 m</p>
     </div>
   </div>
 
@@ -661,12 +604,12 @@
       </div>
     </div>
 
-    <!-- S2 FUND -->
+    <!-- S2 FUND — ATUALIZADA -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id fund">S2</div>
-        <div><div class="sess-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-sub">Técnica específica · Aeróbio · Velocidade — plano comum aos 3 grupos</div></div>
-        <div class="sess-vol">5 000 m</div>
+        <div><div class="sess-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-sub">Técnica específica · Aeróbio · Aeróbio Ligeiro</div></div>
+        <div class="sess-vol">7 400 m</div>
       </div>
       <div class="sess-body">
         <div class="sess-sections">
@@ -691,8 +634,17 @@
             <div class="ti aer">&nbsp;100 Cos + 100 Bru</div>
           </div>
           <div class="tsec">
-            <div class="tsec-label">🔴 Velocidade — 600 m</div>
-            <div class="ti vel">12×50 (25 MAX C/Salto + 25 Suave)</div>
+            <div class="tsec-label">🩵 Aeróbio Ligeiro — 3 000 m</div>
+            <div class="ti alig">500 Liv C/SNK 6:15</div>
+            <div class="ti alig">+ 2×250 Liv Per C/B 4:00</div>
+            <div class="ti alig">400 Liv C/B 5:00</div>
+            <div class="ti alig">+ 2×200 Est 3:00</div>
+            <div class="ti alig">300 Liv 3:45</div>
+            <div class="ti alig">+ 2×150 Cos 2:15</div>
+            <div class="ti alig">200 Liv 2:30</div>
+            <div class="ti alig">+ 2×100 Bru 1:45</div>
+            <div class="ti alig">100 Liv 1:15</div>
+            <div class="ti alig">+ 2×50 Mar 45"</div>
           </div>
           <div class="tsec">
             <div class="tsec-label">🟢 Recuperação — 200 m</div>
@@ -738,12 +690,12 @@
       </div>
     </div>
 
-    <!-- S4 FUND -->
+    <!-- S4 FUND — ATUALIZADA -->
     <div class="sess-card">
       <div class="sess-card-header">
         <div class="sess-id fund">S4</div>
-        <div><div class="sess-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-sub">Velocidade · Aeróbio + Força Resistente · Rendições — plano comum</div></div>
-        <div class="sess-vol">5 000 m</div>
+        <div><div class="sess-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-sub">Velocidade · Aeróbio + Força Resistente · Aeróbio Ligeiro</div></div>
+        <div class="sess-vol">7 200 m</div>
       </div>
       <div class="sess-body">
         <div class="sess-sections">
@@ -767,8 +719,10 @@
             <div class="ti aer">&nbsp;2×50 Per 1ºE C/PQ Forte 2:00</div>
           </div>
           <div class="tsec">
-            <div class="tsec-label">⚪ Rendições — 200 m</div>
-            <div class="ti">4–8 rendições cada</div>
+            <div class="tsec-label">🩵 Aeróbio Ligeiro — 2 400 m</div>
+            <div class="ti alig">800 Liv C/B 9:30</div>
+            <div class="ti alig">4×200 Liv 2:30</div>
+            <div class="ti alig">8×100 Liv 1:15</div>
           </div>
           <div class="tsec">
             <div class="tsec-label">🟢 Recuperação — 800 m</div>
@@ -813,7 +767,7 @@
     </div>
 
   </div>
-</div>
+</div><!-- /page-fund -->
 
 
 <footer>Federação Portuguesa de Natação · Estágio PA 24-26 · Complexo do Jamor, Cruz Quebrada</footer>
