@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estágio PA 24-26 · FPN</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628; --navy2:#0f1f3d; --blue:#1a3a6b;
+    --accent:#00b4d8; --gold:#f4a51a; --red:#e63946;
+    --green:#2dc653; --purple:#ab47bc;
+    --text:#e8edf5; --muted:#7a8fa8; --card:#111e35;
+    --border:rgba(0,180,216,0.15);
+    --vel:#e63946; --mf:#00b4d8; --fund:#f4a51a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;}
+
+  /* ── HEADER ── */
+  header{background:linear-gradient(135deg,var(--navy2) 0%,var(--blue) 100%);border-bottom:2px solid var(--accent);padding:22px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .header-title h1{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:3px;color:var(--accent);line-height:1;}
+  .header-title p{color:var(--muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+  .header-badges{display:flex;gap:8px;flex-wrap:wrap;}
+  .badge{background:rgba(0,180,216,0.12);border:1px solid var(--accent);color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;padding:4px 11px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;}
+  .badge.gold{background:rgba(244,165,26,0.12);border-color:var(--gold);color:var(--gold);}
+
+  /* ── NAV ── */
+  nav{
+    position:sticky;top:0;z-index:200;
+    background:var(--navy2);
+    border-bottom:2px solid var(--border);
+    padding:0 40px;
+    display:flex;align-items:stretch;gap:0;
+  }
+  .nav-btn{
+    cursor:pointer;
+    padding:14px 22px;
+    border:none;border-bottom:3px solid transparent;
+    background:none;color:var(--muted);
+    font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;
+    transition:all .18s;
+    display:flex;align-items:center;gap:7px;
+    white-space:nowrap;
+  }
+  .nav-btn:hover{color:var(--text);background:rgba(255,255,255,0.04);}
+  .nav-btn.active-prog {color:var(--text);border-bottom-color:var(--accent);}
+  .nav-btn.active-vel  {color:var(--vel); border-bottom-color:var(--vel);}
+  .nav-btn.active-mf   {color:var(--mf);  border-bottom-color:var(--mf);}
+  .nav-btn.active-fund {color:var(--fund);border-bottom-color:var(--fund);}
+  .nav-btn.active-ana  {color:var(--green);border-bottom-color:var(--green);}
+
+  /* ── PAGES ── */
+  .page{display:none;padding:28px 40px;max-width:1300px;margin:0 auto;}
+  .page.active{display:block;}
+
+  /* ── SECTION TITLE ── */
+  .st{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:3px;color:var(--accent);margin-bottom:16px;padding-bottom:7px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .st .num{background:var(--accent);color:var(--navy);font-size:.85rem;padding:2px 9px;border-radius:4px;}
+
+  /* ── OBJ PILLS ── */
+  .obj-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;align-items:center;}
+  .obj-row span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+  .obj-pill{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:3px 10px;border-radius:20px;font-size:11px;}
+
+  /* ── DAY CARDS ── */
+  .days-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+  .day-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .day-card-header{background:linear-gradient(90deg,var(--blue),var(--navy2));padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--accent);}
+  .day-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--accent);line-height:1;}
+  .day-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .day-card-body{padding:12px 16px;}
+  .si{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);align-items:flex-start;}
+  .si:last-child{border-bottom:none;}
+  .st2{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);white-space:nowrap;min-width:86px;margin-top:2px;}
+  .sd{font-size:12px;}
+  .tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin-left:5px;vertical-align:middle;font-family:'DM Mono',monospace;}
+  .tag.a{background:rgba(0,180,216,0.15);color:var(--accent);}
+  .tag.g{background:rgba(244,165,26,0.15);color:var(--gold);}
+  .tag.s{background:rgba(44,198,83,0.12);color:var(--green);}
+  .tag.p{background:rgba(230,57,70,0.15);color:var(--red);}
+
+  /* ── GIN GRID ── */
+  .gin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+  .gin-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;}
+  .gin-card h4{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:2px;color:var(--gold);margin-bottom:6px;}
+  .gin-card p{font-size:12px;}
+
+  /* ── GROUP PAGE ── */
+  .group-header-bar{
+    display:flex;align-items:center;gap:16px;padding:18px 22px;
+    border-radius:10px;margin-bottom:24px;
+  }
+  .group-header-bar.vel {background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);}
+  .group-header-bar.mf  {background:rgba(0,180,216,0.1);border:1px solid rgba(0,180,216,0.3);}
+  .group-header-bar.fund{background:rgba(244,165,26,0.1);border:1px solid rgba(244,165,26,0.3);}
+  .group-header-bar .icon{font-size:2.2rem;line-height:1;}
+  .group-header-bar h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;}
+  .group-header-bar.vel  h2{color:var(--vel);}
+  .group-header-bar.mf   h2{color:var(--mf);}
+  .group-header-bar.fund h2{color:var(--fund);}
+  .group-header-bar p{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+
+  /* sessions in group view */
+  .sessions-list{display:flex;flex-direction:column;gap:20px;}
+  .sess-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+  .sess-card-header{
+    display:flex;align-items:center;gap:14px;padding:12px 18px;
+    background:linear-gradient(90deg,rgba(255,255,255,0.04),transparent);
+    border-bottom:1px solid var(--border);
+  }
+  .sess-id{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;padding:3px 12px;border-radius:5px;color:var(--navy);}
+  .sess-id.vel {background:var(--vel);}
+  .sess-id.mf  {background:var(--mf);}
+  .sess-id.fund{background:var(--fund);}
+  .sess-meta-title{font-size:13px;font-weight:600;}
+  .sess-meta-sub{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .sess-vol{margin-left:auto;font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);background:rgba(0,180,216,0.1);padding:4px 10px;border-radius:4px;}
+  .sess-vol.nd{color:var(--muted);background:rgba(255,255,255,0.05);}
+
+  .sess-body{padding:16px 18px;}
+  .sess-sections{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+
+  .tsec{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:12px 14px;}
+  .tsec-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600;margin-bottom:6px;}
+  .ti{font-size:12px;padding:2px 0 2px 8px;border-left:2px solid transparent;}
+  .ti.aq  {border-color:#4fc3f7;}
+  .ti.tec {border-color:var(--purple);}
+  .ti.prin{border-color:var(--gold);}
+  .ti.rec {border-color:var(--green);}
+  .ti.vel {border-color:var(--red);}
+  .ti.aer {border-color:#26c6da;}
+  .ti.nd  {color:var(--muted);font-style:italic;}
+
+  .nd-notice{
+    padding:24px;text-align:center;
+    color:var(--muted);font-size:13px;
+    background:rgba(255,255,255,0.02);border-radius:8px;
+    border:1px dashed rgba(255,255,255,0.1);
+  }
+  .nd-notice strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;margin-bottom:4px;color:rgba(255,255,255,0.3);}
+
+  /* ── ANÁLISE ── */
+  .analise-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:32px;}
+  .a-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;}
+  .a-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:2px;color:var(--accent);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .bar-row{display:flex;align-items:center;gap:10px;padding:5px 0;}
+  .bar-label{font-size:11px;width:145px;flex-shrink:0;}
+  .bar-track{flex:1;height:8px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:4px;}
+  .bar-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);width:36px;text-align:right;}
+  .sub-note{font-size:10px;color:var(--muted);margin:-3px 0 5px 155px;}
+  .adiv{border-top:1px solid var(--border);margin:12px 0;}
+  .asubtitle{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+  .stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+  .stat-row:last-child{border-bottom:none;}
+  .stat-label{font-size:12px;}
+  .stat-val{font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);}
+
+  /* vol table */
+  .vol-table{width:100%;border-collapse:collapse;margin-bottom:32px;}
+  .vol-table th{background:rgba(0,180,216,0.08);color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-family:'DM Mono',monospace;padding:9px 14px;text-align:left;border-bottom:2px solid var(--accent);}
+  .vol-table td{padding:8px 14px;font-size:12px;border-bottom:1px solid rgba(255,255,255,0.05);}
+  .vol-table tr:hover td{background:rgba(255,255,255,0.03);}
+  .vol-table .mono{font-family:'DM Mono',monospace;color:var(--gold);}
+  .vol-table .total-row td{background:rgba(0,180,216,0.07);font-weight:600;color:var(--accent);border-top:2px solid var(--border);}
+
+  footer{background:var(--navy2);border-top:1px solid var(--border);padding:14px 40px;text-align:center;font-size:11px;color:var(--muted);letter-spacing:1px;}
+
+  @media(max-width:900px){
+    .days-grid,.analise-grid,.gin-grid{grid-template-columns:1fr;}
+    .sess-sections{grid-template-columns:1fr;}
+    .page,header,nav{padding-left:16px;padding-right:16px;}
+    nav{overflow-x:auto;}
+    .nav-btn{padding:12px 14px;font-size:.85rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <h1>ESTÁGIO PA 24-26</h1>
+    <p>Federação Portuguesa de Natação · Sub23 &amp; Seniores · 3 Dias / 5 Sessões</p>
+  </div>
+  <div class="header-badges">
+    <div class="badge">5 Sessões Água</div>
+    <div class="badge">1 Ginásio</div>
+    <div class="badge gold">3 Grupos</div>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active-prog" data-view="prog"  onclick="setView('prog')">📋 Programa</button>
+  <button class="nav-btn"             data-view="vel"   onclick="setView('vel')">⚡ Velocidade</button>
+  <button class="nav-btn"             data-view="mf"    onclick="setView('mf')">🔵 Meio Fundo</button>
+  <button class="nav-btn"             data-view="fund"  onclick="setView('fund')">🟠 Fundo</button>
+  <button class="nav-btn"             data-view="ana"   onclick="setView('ana')">📊 Análise</button>
+</nav>
+
+<!-- ═══════════════ PROGRAMA ═══════════════ -->
+<div class="page active" id="page-prog">
+
+  <div class="st"><span class="num">01</span> OBJETIVOS GERAIS</div>
+  <div class="obj-row">
+    <span>Objetivos:</span>
+    <div class="obj-pill">Reativação de carga</div>
+    <div class="obj-pill">Consolidação técnica</div>
+    <div class="obj-pill">Base aeróbia</div>
+    <div class="obj-pill">Estímulos específicos</div>
+    <div class="obj-pill">Neuromuscular (velocistas)</div>
+    <div class="obj-pill">Cap. aeróbia (meio-fundo)</div>
+  </div>
+
+  <div class="st"><span class="num">02</span> PLANEAMENTO HORÁRIO</div>
+  <div class="days-grid">
+    <!-- DIA 1 -->
+    <div class="day-card">
+      <div class="day-card-header"><div class="day-num">01</div><div><div style="font-size:13px;font-weight:600;">Entrada + S1 + Ginásio + Spa</div><div class="day-label">Chegada e ativação</div></div></div>
+      <div class="day-card-body">
+        <div class="si"><div class="st2">12:00</div><div class="sd">Chegada, check-in e briefing técnico</div></div>
+        <div class="si"><div class="st2">12:30</div><div class="sd">Almoço</div></div>
+        <div class="si"><div class="st2">14:30</div><div class="sd">Reunião rápida de preparação (10 min)</div></div>
+        <div class="si"><div class="st2">15:00–17:15</div><div class="sd">Sessão 1 (Água)<span class="tag a">ÁGUA</span></div></div>
+        <div class="si"><div class="st2">17:30</div><div class="sd">Snack</div></div>
+        <div class="si"><div class="st2">18:00–19:00</div><div class="sd">Ginásio<span class="tag g">GINÁSIO</span></div></div>
+        <div class="si"><div class="st2">19:15–19:45</div><div class="sd">Spa / Recuperação<span class="tag s">SPA</span></div></div>
+        <div class="si"><div class="st2">20:00</div><div class="sd">Jantar</div></div>
+        <div class="si"><div class="st2">22:00</div><div class="sd">Repouso</div></div>
+      </div>
+    </div>
+    <!-- DIA 2 -->
+    <div class="day-card">
+      <div class="day-card-header"><div class="day-num">02</div><div><div style="font-size:13px;font-weight:600;">S2 + S3 + Palestra + Spa</div><div class="day-label">Dia de carga dupla</div></div></div>
+      <div class="day-card-body">
+        <div class="si"><div class="st2">08:00</div><div class="sd">Pequeno-almoço</div></div>
+        <div class="si"><div class="st2">09:30–11:45</div><div class="sd">Sessão 2 (Água)<span class="tag a">ÁGUA</span></div></div>
+        <div class="si"><div class="st2">12:30</div><div class="sd">Almoço</div></div>
+        <div class="si"><div class="st2">15:00–16:00</div><div class="sd">Palestra: Objetivos &amp; Planeamento<span class="tag p">PALESTRA</span></div></div>
+        <div class="si"><div class="st2">16:15–18:00</div><div class="sd">Sessão 3 (Água)<span class="tag a">ÁGUA</span></div></div>
+        <div class="si"><div class="st2">18:15</div><div class="sd">Snack</div></div>
+        <div class="si"><div class="st2">18:45–19:30</div><div class="sd">Spa / Recuperação<span class="tag s">SPA</span></div></div>
+        <div class="si"><div class="st2">20:00</div><div class="sd">Jantar</div></div>
+        <div class="si"><div class="st2">22:00</div><div class="sd">Repouso</div></div>
+      </div>
+    </div>
+    <!-- DIA 3 -->
+    <div class="day-card">
+      <div class="day-card-header"><div class="day-num">03</div><div><div style="font-size:13px;font-weight:600;">S4 + S5 + Encerramento</div><div class="day-label">Consolidação e saída</div></div></div>
+      <div class="day-card-body">
+        <div class="si"><div class="st2">08:00</div><div class="sd">Pequeno-almoço</div></div>
+        <div class="si"><div class="st2">09:30–11:30</div><div class="sd">Sessão 4 (Água)<span class="tag a">ÁGUA</span></div></div>
+        <div class="si"><div class="st2">12:30</div><div class="sd">Almoço</div></div>
+        <div class="si"><div class="st2">14:30–16:00</div><div class="sd">Sessão 5 (Água)<span class="tag a">ÁGUA</span></div></div>
+        <div class="si"><div class="st2">16:15</div><div class="sd">Feedback final</div></div>
+        <div class="si"><div class="st2">17:00</div><div class="sd">Encerramento oficial</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="st"><span class="num">03</span> GINÁSIO &amp; RECUPERAÇÃO</div>
+  <div class="gin-grid">
+    <div class="gin-card"><h4>⚡ Velocistas — Potência Leve (Dia 1 · 18:00–19:00)</h4><p>Saltos · Medballs · Coordenação explosiva</p></div>
+    <div class="gin-card"><h4>🔵 Meio-Fundo — Força Funcional (Dia 1 · 18:00–19:00)</h4><p>Força funcional · Core</p></div>
+    <div class="gin-card" style="border-color:rgba(44,198,83,0.3);"><h4 style="color:var(--green);">🟢 Spa — Dia 1 &amp; Dia 2</h4><p>Dia 1: Hidromassagem + Gelo<br>Dia 2: Crioterapia parcial + Hidromassagem + Alongamento ativo</p></div>
+    <div class="gin-card" style="border-color:rgba(230,57,70,0.25);"><h4 style="color:var(--red);">📋 Palestra — Dia 2 (15:00–16:00)</h4><p>Objetivos &amp; Planeamento Competitivo para a época</p></div>
+  </div>
+
+</div><!-- /page-prog -->
+
+
+<!-- ═══════════════ VELOCIDADE ═══════════════ -->
+<div class="page" id="page-vel">
+  <div class="group-header-bar vel">
+    <div class="icon">⚡</div>
+    <div>
+      <h2>VELOCIDADE</h2>
+      <p>5 sessões · Volume confirmado em S2 + S4 · S1, S3, S5 a definir (Rui Costa)</p>
+    </div>
+  </div>
+  <div class="sessions-list">
+
+    <!-- S1 -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id vel">S1</div>
+        <div><div class="sess-meta-title">Sessão 1 — Dia 1 · 15:00–17:15</div><div class="sess-meta-sub">Reativação aeróbia · Técnica global</div></div>
+        <div class="sess-vol nd">A definir</div>
+      </div>
+      <div class="sess-body">
+        <div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão do grupo de Velocidade entregue pelo treinador Rui Costa</div>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id vel">S2</div>
+        <div><div class="sess-meta-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-meta-sub">Técnica específica · Aeróbio · Velocidade</div></div>
+        <div class="sess-vol">5 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 1 000 m</div>
+            <div class="ti aq">400 Livres</div>
+            <div class="ti aq">300 Bra</div>
+            <div class="ti aq">200 Per (100 costas + 100 bruços)</div>
+            <div class="ti aq">4×50 TT (25 drill + 25 NC)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟣 Técnica Específica — 800 m</div>
+            <div class="ti tec">4×50 técnica (alinhamento e eficiência)</div>
+            <div class="ti tec">4×50 subaquáticos (até 15m forte + suave)</div>
+            <div class="ti tec">4×50 viragens (25 nado + vir + saída forte)</div>
+            <div class="ti tec">4×50 rendições (troca rápida e precisa)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔵 Aeróbio — 2 400 m</div>
+            <div class="ti aer">3×:</div>
+            <div class="ti aer">&nbsp;6×100 Liv (1-Palas+BB, 2-BB, 3-NC) 1:15</div>
+            <div class="ti aer">&nbsp;100 Cos + 100 Bru</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔴 Velocidade — 600 m</div>
+            <div class="ti vel">12×50 (25 MAX C/Salto + 25 Suave)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 200 m</div>
+            <div class="ti rec">200 EE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id vel">S3</div>
+        <div><div class="sess-meta-title">Sessão 3 — Dia 2 · 16:15–18:00</div><div class="sess-meta-sub">Séries longas · Ritmo de prova</div></div>
+        <div class="sess-vol nd">A definir</div>
+      </div>
+      <div class="sess-body">
+        <div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão do grupo de Velocidade entregue pelo treinador Rui Costa</div>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id vel">S4</div>
+        <div><div class="sess-meta-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-meta-sub">Velocidade · Aeróbio + Força Resistente · Rendições</div></div>
+        <div class="sess-vol">5 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 1 200 m</div>
+            <div class="ti aq">400 Liv R1/3, R1/5</div>
+            <div class="ti aq">4×100 Est 10" int</div>
+            <div class="ti aq">8×50 1ºE Per</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔴 Velocidade — 600 m</div>
+            <div class="ti vel">2×:</div>
+            <div class="ti vel">&nbsp;50 Max C/Salto + 25 Suave</div>
+            <div class="ti vel">&nbsp;50 viragem (25 forte + vir + saída até 15m)</div>
+            <div class="ti vel">&nbsp;25 Suave</div>
+            <div class="ti vel">&nbsp;50 C/Salto (20 Max + 30 Suave)</div>
+            <div class="ti vel">&nbsp;100 EE Suave</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔵 Aeróbio + Força Resistente — 2 400 m</div>
+            <div class="ti aer">4×:</div>
+            <div class="ti aer">&nbsp;3×150 Liv C/PB e Palas 2:15</div>
+            <div class="ti aer">&nbsp;2×100 Liv com Palas 1:30</div>
+            <div class="ti aer">&nbsp;2×50 Per 1ºE C/PQ Forte 2:00</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">⚪ Rendições — 200 m</div>
+            <div class="ti">4–8 rendições cada</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 800 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+            <div class="ti rec">4×100 Liv Per 10"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id vel">S5</div>
+        <div><div class="sess-meta-title">Sessão 5 — Dia 3 · 14:30–16:00</div><div class="sess-meta-sub">Progressivos · Ritmo de prova · Consolidação final</div></div>
+        <div class="sess-vol nd">A definir</div>
+      </div>
+      <div class="sess-body">
+        <div class="nd-notice"><strong>PLANO A DEFINIR</strong>Sessão do grupo de Velocidade entregue pelo treinador Rui Costa</div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-vel -->
+
+
+<!-- ═══════════════ MEIO FUNDO ═══════════════ -->
+<div class="page" id="page-mf">
+  <div class="group-header-bar mf">
+    <div class="icon">🔵</div>
+    <div>
+      <h2>MEIO FUNDO</h2>
+      <p>5 sessões · Volume total: 28 100 m · Intensidade dominante: A2 / A2+</p>
+    </div>
+  </div>
+  <div class="sessions-list">
+
+    <!-- S1 MF -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id mf">S1</div>
+        <div><div class="sess-meta-title">Sessão 1 — Dia 1 · 15:00–17:15</div><div class="sess-meta-sub">Reativação aeróbia · Técnica global</div></div>
+        <div class="sess-vol">6 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 2 500 m</div>
+            <div class="ti aq">400 Liv (solto)</div>
+            <div class="ti aq">200 Per (100 Cos + 100 Bru)</div>
+            <div class="ti aq">200 Liv Bra</div>
+            <div class="ti aq">8×50 TT (Liv + 1ºE)</div>
+            <div class="ti aq">4×100 Est (50 drill + 50 NC)</div>
+            <div class="ti aq">6×50 1ºE progressivo (1–3, 4–6)</div>
+            <div class="ti aq">4×100 Liv Regressivo 1–4</div>
+            <div class="ti aq">4×50 1ºE RP 200 (forte, saída controlada)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟡 Série Principal — 2 700 m</div>
+            <div class="ti prin">3×(6×100) 1:20/1:30 + 1:30 (3-A2, 3-A2+)</div>
+            <div class="ti prin">2×50 C/Salto 2:00</div>
+            <div class="ti prin">4×50 S/Salto 1:30</div>
+            <div class="ti prin">2×100 S/Salto 2:00 (Palas)</div>
+            <div class="ti prin">8×50 S/Salto 50" (4 Palas + 4 Normal)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 800 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+            <div class="ti rec">4×100 Liv Per 10"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S2 MF -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id mf">S2</div>
+        <div><div class="sess-meta-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-meta-sub">Técnica específica · Aeróbio · Velocidade — plano comum aos 3 grupos</div></div>
+        <div class="sess-vol">5 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 1 000 m</div>
+            <div class="ti aq">400 Livres</div>
+            <div class="ti aq">300 Bra</div>
+            <div class="ti aq">200 Per (100 costas + 100 bruços)</div>
+            <div class="ti aq">4×50 TT (25 drill + 25 NC)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟣 Técnica Específica — 800 m</div>
+            <div class="ti tec">4×50 técnica (alinhamento e eficiência)</div>
+            <div class="ti tec">4×50 subaquáticos (até 15m forte + suave)</div>
+            <div class="ti tec">4×50 viragens (25 nado + vir + saída forte)</div>
+            <div class="ti tec">4×50 rendições (troca rápida e precisa)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔵 Aeróbio — 2 400 m</div>
+            <div class="ti aer">3×:</div>
+            <div class="ti aer">&nbsp;6×100 Liv (1-Palas+BB, 2-BB, 3-NC) 1:15</div>
+            <div class="ti aer">&nbsp;100 Cos + 100 Bru</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔴 Velocidade — 600 m</div>
+            <div class="ti vel">12×50 (25 MAX C/Salto + 25 Suave)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 200 m</div>
+            <div class="ti rec">200 EE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 MF -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id mf">S3</div>
+        <div><div class="sess-meta-title">Sessão 3 — Dia 2 · 16:15–18:00</div><div class="sess-meta-sub">Séries longas · Ritmo de prova 200</div></div>
+        <div class="sess-vol">6 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 3 000 m</div>
+            <div class="ti aq">500 livre (negativo)</div>
+            <div class="ti aq">5×100 (alternar 100 pernas / 100 pull)</div>
+            <div class="ti aq">10×50 técnica (estilos à escolha)</div>
+            <div class="ti aq">5×100 Estilos (ritmo controlado)</div>
+            <div class="ti aq">10×50 Liv PQ+Palas+SNK 10"</div>
+            <div class="ti aq">6×50 ritmo de prova 200</div>
+            <div class="ti aq">200 EE</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟡 Série Principal — 2 200 m</div>
+            <div class="ti prin">2×(6×150) 2:00/2:15 + 1:30 (100-A2, 50-A3)</div>
+            <div class="ti prin">2× (5:00 entre séries):</div>
+            <div class="ti prin">&nbsp;50 C/Salto 45"</div>
+            <div class="ti prin">&nbsp;100 S/Salto 1:30</div>
+            <div class="ti prin">&nbsp;50 S/Salto</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 800 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+            <div class="ti rec">4×100 Liv Per 10"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4 MF -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id mf">S4</div>
+        <div><div class="sess-meta-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-meta-sub">Velocidade · Aeróbio + Força Resistente · Rendições — plano comum</div></div>
+        <div class="sess-vol">5 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 1 200 m</div>
+            <div class="ti aq">400 Liv R1/3, R1/5</div>
+            <div class="ti aq">4×100 Est 10" int</div>
+            <div class="ti aq">8×50 1ºE Per</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔴 Velocidade — 600 m</div>
+            <div class="ti vel">2×: 50 Max C/Salto + 25 Suave</div>
+            <div class="ti vel">&nbsp;50 viragem (25 forte + vir + saída até 15m)</div>
+            <div class="ti vel">&nbsp;25 Suave + 50 C/Salto (20 Max + 30 Suave) + 100 EE Suave</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔵 Aeróbio + Força Resistente — 2 400 m</div>
+            <div class="ti aer">4×:</div>
+            <div class="ti aer">&nbsp;3×150 Liv C/PB e Palas 2:15</div>
+            <div class="ti aer">&nbsp;2×100 Liv com Palas 1:30</div>
+            <div class="ti aer">&nbsp;2×50 Per 1ºE C/PQ Forte 2:00</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">⚪ Rendições — 200 m</div>
+            <div class="ti">4–8 rendições cada</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 800 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+            <div class="ti rec">4×100 Liv Per 10"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 MF -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id mf">S5</div>
+        <div><div class="sess-meta-title">Sessão 5 — Dia 3 · 14:30–16:00</div><div class="sess-meta-sub">Progressivos · Ritmo de prova · Consolidação final</div></div>
+        <div class="sess-vol">6 100 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 2 300 m</div>
+            <div class="ti aq">300 EE + 200 Bra + 200 Per</div>
+            <div class="ti aq">6×100 (50 drill + 50 NC)</div>
+            <div class="ti aq">8×50 (25/25: scull 1ª metade, NC 2ª)</div>
+            <div class="ti aq">12×50 progressivo até ritmo de 200 1:00</div>
+            <div class="ti aq">&nbsp;(4-Palas+BB, 4-BB, 4-Nor)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟡 Série Principal — 3 000 m</div>
+            <div class="ti prin">3× (1:30 entre séries):</div>
+            <div class="ti prin">&nbsp;300 Liv Prog cd 100 4:00/4:15</div>
+            <div class="ti prin">&nbsp;10×50 1:00</div>
+            <div class="ti prin">4× (3:00 entre séries):</div>
+            <div class="ti prin">&nbsp;50 S/Salto 50" + 50 S/Salto 45" + 50 S/Salto</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 800 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+            <div class="ti rec">4×100 Liv Per 10"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-mf -->
+
+
+<!-- ═══════════════ FUNDO ═══════════════ -->
+<div class="page" id="page-fund">
+  <div class="group-header-bar fund">
+    <div class="icon">🟠</div>
+    <div>
+      <h2>FUNDO</h2>
+      <p>5 sessões · Volume total: 31 300 m · Série principal: 59% do volume total</p>
+    </div>
+  </div>
+  <div class="sessions-list">
+
+    <!-- S1 FUND -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id fund">S1</div>
+        <div><div class="sess-meta-title">Sessão 1 — Dia 1 · 15:00–17:15</div><div class="sess-meta-sub">Reativação aeróbia · Técnica de eficiência</div></div>
+        <div class="sess-vol">7 100 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 2 100 m</div>
+            <div class="ti aq">600 (300 EE + 200 TT + 100 Liv R1/3)</div>
+            <div class="ti aq">3×300 Liv Bra 3:45 (Neg, Prog, Neg)</div>
+            <div class="ti aq">6×100 Liv Per S/B P1–3 1:45</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟣 Técnica — 300 m</div>
+            <div class="ti tec">6×50 eficiência</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟡 Série Principal — 4 500 m</div>
+            <div class="ti prin">3×500 Liv 6:15 (1, ½, 1/5)</div>
+            <div class="ti prin">3×400 Liv 5:00 (Prog, Neg, Prog) + 1:00 int</div>
+            <div class="ti prin">3×200 Liv 2:40 (A3)</div>
+            <div class="ti prin">4×150 Liv 1:45 + 1:00</div>
+            <div class="ti prin">6×100 Liv 1:30</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 200 m</div>
+            <div class="ti rec">Recuperação ativa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S2 FUND -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id fund">S2</div>
+        <div><div class="sess-meta-title">Sessão 2 — Dia 2 · 09:30–11:45</div><div class="sess-meta-sub">Técnica específica · Aeróbio · Velocidade — plano comum aos 3 grupos</div></div>
+        <div class="sess-vol">5 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 1 000 m</div>
+            <div class="ti aq">400 Livres</div>
+            <div class="ti aq">300 Bra</div>
+            <div class="ti aq">200 Per (100 costas + 100 bruços)</div>
+            <div class="ti aq">4×50 TT (25 drill + 25 NC)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟣 Técnica Específica — 800 m</div>
+            <div class="ti tec">4×50 técnica (alinhamento e eficiência)</div>
+            <div class="ti tec">4×50 subaquáticos (até 15m forte + suave)</div>
+            <div class="ti tec">4×50 viragens (25 nado + vir + saída forte)</div>
+            <div class="ti tec">4×50 rendições (troca rápida e precisa)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔵 Aeróbio — 2 400 m</div>
+            <div class="ti aer">3×:</div>
+            <div class="ti aer">&nbsp;6×100 Liv (1-Palas+BB, 2-BB, 3-NC) 1:15</div>
+            <div class="ti aer">&nbsp;100 Cos + 100 Bru</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔴 Velocidade — 600 m</div>
+            <div class="ti vel">12×50 (25 MAX C/Salto + 25 Suave)</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 200 m</div>
+            <div class="ti rec">200 EE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 FUND -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id fund">S3</div>
+        <div><div class="sess-meta-title">Sessão 3 — Dia 2 · 16:15–18:00</div><div class="sess-meta-sub">Volume alto · Progressão de ritmos 1:20→1:10</div></div>
+        <div class="sess-vol">7 100 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 2 400 m</div>
+            <div class="ti aq">600 (300 EE + 200 TT + 100 Liv R1/3)</div>
+            <div class="ti aq">3×200 Est 3:00</div>
+            <div class="ti aq">3×200 Liv Bra 2:30 (Neg, Prog, Neg)</div>
+            <div class="ti aq">6×100 Liv Per S/B P1–3 1:45</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟣 Técnica — 300 m</div>
+            <div class="ti tec">6×50 deslize + contagem de ciclos</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟡 Série Principal — 4 200 m</div>
+            <div class="ti prin">36×100 (12× por bloco, 1:00 int):</div>
+            <div class="ti prin">&nbsp;12×100 @1:20</div>
+            <div class="ti prin">&nbsp;12×100 @1:15</div>
+            <div class="ti prin">&nbsp;12×100 @1:10</div>
+            <div class="ti prin">12×50 Liv @35"</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 200 m</div>
+            <div class="ti rec">Recuperação ativa</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4 FUND -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id fund">S4</div>
+        <div><div class="sess-meta-title">Sessão 4 — Dia 3 · 09:30–11:30</div><div class="sess-meta-sub">Velocidade · Aeróbio + Força Resistente · Rendições — plano comum</div></div>
+        <div class="sess-vol">5 000 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 1 200 m</div>
+            <div class="ti aq">400 Liv R1/3, R1/5</div>
+            <div class="ti aq">4×100 Est 10" int</div>
+            <div class="ti aq">8×50 1ºE Per</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔴 Velocidade — 600 m</div>
+            <div class="ti vel">2×: 50 Max C/Salto + 25 Suave</div>
+            <div class="ti vel">&nbsp;50 viragem (25 forte + vir + saída até 15m)</div>
+            <div class="ti vel">&nbsp;25 Suave + 50 C/Salto (20 Max + 30 Suave) + 100 EE Suave</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🔵 Aeróbio + Força Resistente — 2 400 m</div>
+            <div class="ti aer">4×:</div>
+            <div class="ti aer">&nbsp;3×150 Liv C/PB e Palas 2:15</div>
+            <div class="ti aer">&nbsp;2×100 Liv com Palas 1:30</div>
+            <div class="ti aer">&nbsp;2×50 Per 1ºE C/PQ Forte 2:00</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">⚪ Rendições — 200 m</div>
+            <div class="ti">4–8 rendições cada</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 800 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+            <div class="ti rec">4×100 Liv Per 10"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 FUND -->
+    <div class="sess-card">
+      <div class="sess-card-header">
+        <div class="sess-id fund">S5</div>
+        <div><div class="sess-meta-title">Sessão 5 — Dia 3 · 14:30–16:00</div><div class="sess-meta-sub">Progressivos · MMP · Consolidação final</div></div>
+        <div class="sess-vol">7 100 m</div>
+      </div>
+      <div class="sess-body">
+        <div class="sess-sections">
+          <div class="tsec"><div class="tsec-label">🟦 Aquecimento — 2 400 m</div>
+            <div class="ti aq">400 NC + 4×100 EST + 4×50 TT</div>
+            <div class="ti aq">8×100 Liv Bra 1:15</div>
+            <div class="ti aq">4×100 Liv Per 1:45</div>
+            <div class="ti aq">200 EE</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟣 Técnica — 300 m</div>
+            <div class="ti tec">6×50 deslize + alinhamento</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟡 Série Principal — 4 000 m</div>
+            <div class="ti prin">4×(4×100 1:15 + 400 NS, Prg, NS, Max) + 2:00</div>
+            <div class="ti prin">2×(4×100) MMP 1:45 + 2:00</div>
+          </div>
+          <div class="tsec"><div class="tsec-label">🟢 Recuperação — 400 m</div>
+            <div class="ti rec">4×100 Liv Regressivo 1–4 1:30</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page-fund -->
+
+
+<!-- ═══════════════ ANÁLISE ═══════════════ -->
+<div class="page" id="page-ana">
+
+  <div class="st"><span class="num">01</span> VOLUMES POR SESSÃO E GRUPO</div>
+  <table class="vol-table" style="margin-bottom:32px;">
+    <thead><tr><th>Sessão</th><th>Dia / Hora</th><th>Velocidade</th><th>Meio Fundo</th><th>Fundo</th><th>Média</th></tr></thead>
+    <tbody>
+      <tr><td><strong>S1</strong></td><td>Dia 1 · 15:00–17:15</td><td class="mono">— (ND)</td><td class="mono">6 000 m</td><td class="mono">7 100 m</td><td class="mono">~6 550 m</td></tr>
+      <tr><td><strong>S2</strong></td><td>Dia 2 · 09:30–11:45</td><td class="mono">5 000 m</td><td class="mono">5 000 m</td><td class="mono">5 000 m</td><td class="mono">5 000 m</td></tr>
+      <tr><td><strong>S3</strong></td><td>Dia 2 · 16:15–18:00</td><td class="mono">— (ND)</td><td class="mono">6 000 m</td><td class="mono">7 100 m</td><td class="mono">~6 550 m</td></tr>
+      <tr><td><strong>S4</strong></td><td>Dia 3 · 09:30–11:30</td><td class="mono">5 000 m</td><td class="mono">5 000 m</td><td class="mono">5 000 m</td><td class="mono">5 000 m</td></tr>
+      <tr><td><strong>S5</strong></td><td>Dia 3 · 14:30–16:00</td><td class="mono">— (ND)</td><td class="mono">6 100 m</td><td class="mono">7 100 m</td><td class="mono">~6 600 m</td></tr>
+      <tr class="total-row"><td colspan="2"><strong>TOTAL</strong></td><td><strong>≥ 10 000 m</strong></td><td><strong>28 100 m</strong></td><td><strong>31 300 m</strong></td><td><strong>~23 100 m</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="st"><span class="num">02</span> ANÁLISE PERCENTUAL POR TIPO DE TRABALHO</div>
+  <div class="analise-grid">
+
+    <div class="a-card">
+      <h3>🔵 MEIO FUNDO — 28 100 m</h3>
+      <div class="bar-row"><div class="bar-label">Aquecimento</div><div class="bar-track"><div class="bar-fill" style="width:46%;background:#4fc3f7;"></div></div><div class="bar-pct">46%</div></div>
+      <div class="sub-note">~12 900 m</div>
+      <div class="bar-row"><div class="bar-label">Série Principal</div><div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--gold);"></div></div><div class="bar-pct">43%</div></div>
+      <div class="sub-note">~12 000 m</div>
+      <div class="bar-row"><div class="bar-label">Recuperação</div><div class="bar-track"><div class="bar-fill" style="width:11%;background:var(--green);"></div></div><div class="bar-pct">11%</div></div>
+      <div class="sub-note">~3 200 m</div>
+      <div class="adiv"></div>
+      <div class="asubtitle">Dentro da Série Principal</div>
+      <div class="bar-row"><div class="bar-label">Aeróbio A2 / A2+</div><div class="bar-track"><div class="bar-fill" style="width:62%;background:#1e88e5;"></div></div><div class="bar-pct">62%</div></div>
+      <div class="bar-row"><div class="bar-label">Aeróbio A3 / Limiár</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:#fb8c00;"></div></div><div class="bar-pct">22%</div></div>
+      <div class="bar-row"><div class="bar-label">Velocidade / Sprint</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--red);"></div></div><div class="bar-pct">10%</div></div>
+      <div class="bar-row"><div class="bar-label">Técnica</div><div class="bar-track"><div class="bar-fill" style="width:6%;background:var(--purple);"></div></div><div class="bar-pct">6%</div></div>
+    </div>
+
+    <div class="a-card">
+      <h3>🟠 FUNDO — 31 300 m</h3>
+      <div class="bar-row"><div class="bar-label">Aquecimento</div><div class="bar-track"><div class="bar-fill" style="width:29%;background:#4fc3f7;"></div></div><div class="bar-pct">29%</div></div>
+      <div class="sub-note">~9 000 m</div>
+      <div class="bar-row"><div class="bar-label">Série Principal</div><div class="bar-track"><div class="bar-fill" style="width:59%;background:var(--gold);"></div></div><div class="bar-pct">59%</div></div>
+      <div class="sub-note">~18 500 m</div>
+      <div class="bar-row"><div class="bar-label">Técnica</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--purple);"></div></div><div class="bar-pct">3%</div></div>
+      <div class="sub-note">~900 m</div>
+      <div class="bar-row"><div class="bar-label">Recuperação</div><div class="bar-track"><div class="bar-fill" style="width:9%;background:var(--green);"></div></div><div class="bar-pct">9%</div></div>
+      <div class="sub-note">~2 900 m</div>
+      <div class="adiv"></div>
+      <div class="asubtitle">Dentro da Série Principal</div>
+      <div class="bar-row"><div class="bar-label">Aeróbio A2 / Ext</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:#1e88e5;"></div></div><div class="bar-pct">55%</div></div>
+      <div class="bar-row"><div class="bar-label">Progressivo / Neg</div><div class="bar-track"><div class="bar-fill" style="width:25%;background:#fb8c00;"></div></div><div class="bar-pct">25%</div></div>
+      <div class="bar-row"><div class="bar-label">Máximo / Sprint</div><div class="bar-track"><div class="bar-fill" style="width:6%;background:var(--red);"></div></div><div class="bar-pct">6%</div></div>
+      <div class="bar-row"><div class="bar-label">MMP / Força Res.</div><div class="bar-track"><div class="bar-fill" style="width:14%;background:#8bc34a;"></div></div><div class="bar-pct">14%</div></div>
+    </div>
+
+    <div class="a-card">
+      <h3>⚡ VELOCIDADE — ≥ 10 000 m (S2 + S4)</h3>
+      <div class="bar-row"><div class="bar-label">Aquecimento</div><div class="bar-track"><div class="bar-fill" style="width:22%;background:#4fc3f7;"></div></div><div class="bar-pct">22%</div></div>
+      <div class="sub-note">~2 200 m</div>
+      <div class="bar-row"><div class="bar-label">Técnica Específica</div><div class="bar-track"><div class="bar-fill" style="width:8%;background:var(--purple);"></div></div><div class="bar-pct">8%</div></div>
+      <div class="sub-note">~800 m</div>
+      <div class="bar-row"><div class="bar-label">Aeróbio base</div><div class="bar-track"><div class="bar-fill" style="width:24%;background:#1e88e5;"></div></div><div class="bar-pct">24%</div></div>
+      <div class="sub-note">~2 400 m</div>
+      <div class="bar-row"><div class="bar-label">Velocidade Sprint</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--red);"></div></div><div class="bar-pct">12%</div></div>
+      <div class="sub-note">~1 200 m</div>
+      <div class="bar-row"><div class="bar-label">Aeróbio + Força R.</div><div class="bar-track"><div class="bar-fill" style="width:24%;background:#8bc34a;"></div></div><div class="bar-pct">24%</div></div>
+      <div class="sub-note">~2 400 m</div>
+      <div class="bar-row"><div class="bar-label">Recuperação</div><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--green);"></div></div><div class="bar-pct">10%</div></div>
+      <div class="sub-note">~1 000 m</div>
+    </div>
+
+    <div class="a-card">
+      <h3>📊 SÍNTESE GERAL</h3>
+      <div class="stat-row"><div class="stat-label">Sessões de Água</div><div class="stat-val">5</div></div>
+      <div class="stat-row"><div class="stat-label">Volume Meio Fundo (5 sessões)</div><div class="stat-val">28 100 m</div></div>
+      <div class="stat-row"><div class="stat-label">Volume Fundo (5 sessões)</div><div class="stat-val">31 300 m</div></div>
+      <div class="stat-row"><div class="stat-label">Volume Velocidade (2 sess. conf.)</div><div class="stat-val">≥ 10 000 m</div></div>
+      <div class="stat-row"><div class="stat-label">Ginásio</div><div class="stat-val">1 × 60 min</div></div>
+      <div class="stat-row"><div class="stat-label">Spa / Recuperação</div><div class="stat-val">2 sessões</div></div>
+      <div class="stat-row"><div class="stat-label">Palestra competitiva</div><div class="stat-val">1 × 60 min</div></div>
+      <div class="stat-row"><div class="stat-label">Intensidade dominante (MF/F)</div><div class="stat-val">A2 / A2+</div></div>
+      <div class="stat-row"><div class="stat-label">Progressão ritmos Fundo (S3)</div><div class="stat-val">1:20 → 1:10</div></div>
+      <div class="stat-row"><div class="stat-label">Sessões duplas água</div><div class="stat-val">1 (Dia 2)</div></div>
+    </div>
+
+  </div>
+</div><!-- /page-ana -->
+
+<footer>Federação Portuguesa de Natação · Estágio PA 24-26 · Complexo do Jamor, Cruz Quebrada</footer>
+
+<script>
+  const views = {
+    prog: 'active-prog',
+    vel:  'active-vel',
+    mf:   'active-mf',
+    fund: 'active-fund',
+    ana:  'active-ana'
+  };
+
+  function setView(v) {
+    // pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + v).classList.add('active');
+    // nav buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.remove('active-prog','active-vel','active-mf','active-fund','active-ana');
+      if (btn.dataset.view === v) btn.classList.add(views[v]);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
